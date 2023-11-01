@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_imgui VERSION 0.1.0 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
+project(roboflex_imgui VERSION 0.1.2 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
