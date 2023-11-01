@@ -1,5 +1,6 @@
 include CMakeLists.txt
 include python/CMakeLists.txt
+include *.png
 recursive-include python *.cpp
 recursive-include examples *.cpp
 recursive-include src *.cpp

@@ -1,7 +1,7 @@
 # python/CMakeLists.txt
 cmake_minimum_required(VERSION 3.24)
 
-project(roboflex_imgui_ext VERSION 0.1.6 DESCRIPTION "roboflex imgui python wrapping")
+project(roboflex_imgui_ext VERSION 0.1.7 DESCRIPTION "roboflex imgui python wrapping")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
