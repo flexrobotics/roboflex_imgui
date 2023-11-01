@@ -272,9 +272,9 @@ void OneDTV::draw()
     vector<vector<double>> values;
     this->populate_values(values);
 
-    uint32_t total_bytes = 0;
+    uint32_t total_samples = 0;
     for (auto [t, c]: timestamped_counts) {
-        total_bytes += c;
+        total_samples += c;
     }
 
     auto x_flags = ImPlotAxisFlags_NoGridLines;
@@ -284,7 +284,7 @@ void OneDTV::draw()
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("bytes per second: %d", total_bytes);
+        ImGui::Text("samples per second: %d", total_samples);
 
         int i = 0;
         for (const auto v: values) {
