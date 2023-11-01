@@ -222,8 +222,6 @@ void OneDTV::receive(MessagePtr m)
     auto shape = serialization::tensor_shape(m->root_map()[data_key]);
     int sequence_length = shape[1];
 
-    std::cout << "GOT: " << shape[0] << " " << shape[1] << std::endl;
-
     double t = core::get_current_time();
     double tm1 = t - 1.0;
     auto timestamped_count = pair<double, uint32_t>(t, sequence_length);
