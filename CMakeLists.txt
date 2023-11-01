@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_imgui VERSION 0.1.3 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
+project(roboflex_imgui VERSION 0.1.4 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -122,16 +122,16 @@ target_link_libraries(roboflex_imgui PUBLIC
 # Examples
 
 # basic_0 example
-add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
-target_link_libraries(display_oneD_data_cpp PUBLIC 
-    roboflex_core 
-    roboflex_imgui
-    imgui
-    implot
-    GLEW
-    GL
-    SDL2
-)
+# add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
+# target_link_libraries(display_oneD_data_cpp PUBLIC 
+#     roboflex_core 
+#     roboflex_imgui
+#     imgui
+#     implot
+#     GLEW
+#     GL
+#     SDL2
+# )
 
 
 # -------------------- 
