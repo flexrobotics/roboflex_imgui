@@ -72,7 +72,7 @@ setup(
     license = "MIT",
     python_requires='>=3.6',
     install_requires=['numpy', 'roboflex'],
-    ext_modules=[CMakeExtension('roboflex/visualization/roboflex_imgui_ext')],
+    ext_modules=[CMakeExtension('roboflex/imgui/roboflex_imgui_ext')],
     cmdclass=dict(build_ext=CMakeBuild),
     py_modules=['__init__'],
     packages=['roboflex.imgui'],
