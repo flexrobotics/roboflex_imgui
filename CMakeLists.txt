@@ -15,6 +15,9 @@ include(FetchContent)
 find_package(SDL2 REQUIRED)
 find_package(GLEW 2.0 REQUIRED)
 
+message("GLEW_INCLUDE_DIRS: ${GLEW_INCLUDE_DIRS}")
+message("GLEW_LIBRARIES: ${GLEW_LIBRARIES}")
+
 # Locate the installed roboflex_core and its dependencies
 # download and build roboflex_core
 FetchContent_Declare(roboflex_core
@@ -24,12 +27,14 @@ FetchContent_Declare(roboflex_core
 set(BUILD_ROBOFLEX_PYTHON_EXT OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(roboflex_core)
 
-# download and build roboflex_transport_zmq
-FetchContent_Declare(roboflex_transport_zmq
-    GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_zmq.git
-    GIT_TAG        main
-)
-FetchContent_MakeAvailable(roboflex_transport_zmq)
+# ONLY IF YOU ARE COMPILING THE EXAMPLE
+# TODO: move into examples/CMakeLists.txt
+# # download and build roboflex_transport_zmq
+# FetchContent_Declare(roboflex_transport_zmq
+#     GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_zmq.git
+#     GIT_TAG        main
+# )
+# FetchContent_MakeAvailable(roboflex_transport_zmq)
 
 # Fetch and make imgui available, and build static library ourselves
 FetchContent_Declare(
@@ -95,17 +100,21 @@ set_property(TARGET roboflex_imgui PROPERTY
 target_include_directories(roboflex_imgui PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> 
     $<INSTALL_INTERFACE:include>
+    ${GLEW_INCLUDE_DIRS} # do we need?
+    ${SDL2_INCLUDE_DIRS} # do we really need?
 )
 
 # Link against the necessary libraries
 target_link_libraries(roboflex_imgui PUBLIC 
     roboflex_core 
-    roboflex_transport_zmq
+    #roboflex_transport_zmq
     imgui
     implot
-    GLEW
-    GL
-    SDL2
+    #GLEW
+    #GL
+    #SDL2
+    ${GLEW_LIBRARIES}
+    ${SDL2_LIBRARIES}
 
     # Unfortunately, we need to link against all these libraries
     # because they are used by roboflex_core, and cmake doesn't
