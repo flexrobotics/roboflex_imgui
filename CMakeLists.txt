@@ -127,6 +127,8 @@ if (APPLE)
     message("IS APPLE!!!")
     target_link_libraries(roboflex_imgui PUBLIC ${GLFW_STATIC_LIBRARIES})
     target_link_libraries(roboflex_imgui PUBLIC "-framework OpenGL")
+else()
+    target_link_libraries(roboflex_imgui PUBLIC GL)
 endif()
 
 
