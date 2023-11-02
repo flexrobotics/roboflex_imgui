@@ -15,6 +15,7 @@ Requires SDL and GLEW to be installed. More than likely, they already are instal
 
     brew install sdl2
     brew install glew
+    brew install glfw
 
 ## pip install
 
@@ -43,6 +44,14 @@ It expects to receive messages that contain a tensor under the key <data_key>. T
 
     # must be started
     visualizer.start()
+
+    # NOTE!!!
+    # On some systems, such as mac, it's bad news to
+    # run a UI on a non-main thread. So instead of 
+    # calling start(), you can do this, which will 
+    # run on the main thread. This call will block 
+    # until the window is closed, in this case.
+    visualizer.run()
 
 
 

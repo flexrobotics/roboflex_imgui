@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(roboflex_imgui VERSION 0.1.7 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
+project(roboflex_imgui VERSION 0.1.8 DESCRIPTION "roboflex visualization/gui tools using IMGUI/IMPLOT")
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -14,9 +14,13 @@ include(FetchContent)
 
 find_package(SDL2 REQUIRED)
 find_package(GLEW 2.0 REQUIRED)
+find_package(glfw3 REQUIRED)
+
+include_directories(${GLFW_INCLUDE_DIRS})
 
 message("GLEW_INCLUDE_DIRS: ${GLEW_INCLUDE_DIRS}")
 message("GLEW_LIBRARIES: ${GLEW_LIBRARIES}")
+message("glfw3_LIBRARIES: ${glfw3_LIBRARIES}")
 
 # Locate the installed roboflex_core and its dependencies
 # download and build roboflex_core
@@ -104,15 +108,17 @@ target_include_directories(roboflex_imgui PUBLIC
     ${SDL2_INCLUDE_DIRS} # do we really need?
 )
 
+#target_link_libraries(app_framework app_framework_library ${GLEW_LIBRARY} glfw3)
+#target_link_libraries(app_framework "-framework OpenGL")
 # Link against the necessary libraries
 target_link_libraries(roboflex_imgui PUBLIC 
     roboflex_core 
-    #roboflex_transport_zmq
     imgui
     implot
     #GLEW
     #GL
     #SDL2
+    #glfw3
     ${GLEW_LIBRARIES}
     ${SDL2_LIBRARIES}
 
@@ -125,22 +131,35 @@ target_link_libraries(roboflex_imgui PUBLIC
     xtl
     Eigen3::Eigen
 )
+if (APPLE)
+    message("IS APPLE!!!")
+    target_link_libraries(roboflex_imgui PUBLIC ${GLFW_STATIC_LIBRARIES})
+    target_link_libraries(roboflex_imgui PUBLIC "-framework OpenGL")
+endif()
 
 
 # -------------------- 
 # Examples
 
-# basic_0 example
+# display_oneD_data_cpp example
 # add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
 # target_link_libraries(display_oneD_data_cpp PUBLIC 
 #     roboflex_core 
 #     roboflex_imgui
+#     roboflex_transport_zmq
 #     imgui
 #     implot
 #     GLEW
 #     GL
 #     SDL2
 # )
+
+# show_blank_cpp example
+add_executable(show_blank_cpp examples/show_blank_cpp.cpp)
+target_link_libraries(show_blank_cpp PUBLIC 
+    roboflex_core 
+    roboflex_imgui
+)
 
 
 # -------------------- 

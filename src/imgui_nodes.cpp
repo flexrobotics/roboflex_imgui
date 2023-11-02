@@ -78,14 +78,12 @@ void IMPLOTNode::child_thread_fn()
     }
 
     // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-
     SDL_Window* window  = SDL_CreateWindow(name.c_str(), 
         initial_pos.first, initial_pos.second, 
         initial_size.first, initial_size.second, 
@@ -95,8 +93,13 @@ void IMPLOTNode::child_thread_fn()
 
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
+    auto glew_res = GLEW_OK;
+    #ifndef __APPLE__
+        // for some reason we don't do it on mac
+        glew_res = glewInit();
+    #endif
 
-    bool err = glewInit() != GLEW_OK;
+    bool err = glew_res != GLEW_OK;
     if (err) {
         auto err = std::string("IMPLOTNode Error calling glewInit");
         throw std::runtime_error(err);
@@ -108,11 +111,34 @@ void IMPLOTNode::child_thread_fn()
     ImPlot::CreateContext();
 
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+
+#if __APPLE__
+    // this might be "4.10"
+    const unsigned char * glsls = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    // now we have "410"
+    const char glsl_new_string[] = {(char)glsls[0], (char)glsls[2], (char)glsls[3], 0};
+    
+    // now we have "#version 410"
+    std:string n = string("#version ") + glsl_new_string;
+    const char* glsl_version = n.data();
+
+#else
+    const char* glsl_version = "#version 130";
+#endif
+
+    if (debug) {
+        std::cout << "GL_VERSION: "<< glGetString(GL_VERSION) << std::endl;
+        std::cout << "GL_SHADING_LANGUAGE_VERSION: "<< glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+        std::cout << "glsl_version passed to ImGui_ImplOpenGL3_Init: \""<< glsl_version << "\"" << std::endl;
+    }
+
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     double t0 = core::get_current_time();
 
-    while (!this->stop_requested()) {
+    bool done = false;
+    while (!done && !this->stop_requested()) {
 
         // POLL FOR EVENTS
         SDL_Event event;
@@ -125,6 +151,7 @@ void IMPLOTNode::child_thread_fn()
                  event.window.windowID == SDL_GetWindowID(window)))
             {
                 this->request_stop();
+                done = true;
             }
         }
 
