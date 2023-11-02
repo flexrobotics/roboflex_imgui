@@ -14,13 +14,11 @@ include(FetchContent)
 
 find_package(SDL2 REQUIRED)
 find_package(GLEW 2.0 REQUIRED)
-find_package(glfw3 REQUIRED)
 
 include_directories(${GLFW_INCLUDE_DIRS})
 
 message("GLEW_INCLUDE_DIRS: ${GLEW_INCLUDE_DIRS}")
 message("GLEW_LIBRARIES: ${GLEW_LIBRARIES}")
-message("glfw3_LIBRARIES: ${glfw3_LIBRARIES}")
 
 # Locate the installed roboflex_core and its dependencies
 # download and build roboflex_core
@@ -108,17 +106,11 @@ target_include_directories(roboflex_imgui PUBLIC
     ${SDL2_INCLUDE_DIRS} # do we really need?
 )
 
-#target_link_libraries(app_framework app_framework_library ${GLEW_LIBRARY} glfw3)
-#target_link_libraries(app_framework "-framework OpenGL")
 # Link against the necessary libraries
 target_link_libraries(roboflex_imgui PUBLIC 
     roboflex_core 
     imgui
     implot
-    #GLEW
-    #GL
-    #SDL2
-    #glfw3
     ${GLEW_LIBRARIES}
     ${SDL2_LIBRARIES}
 
