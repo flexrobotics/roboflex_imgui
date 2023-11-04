@@ -1,41 +1,19 @@
-#ifndef ROBOFLEX_IMGUI__H
-#define ROBOFLEX_IMGUI__H
+#ifndef ROBOFLEX_ONE_D_TELEVISION__H
+#define ROBOFLEX_ONE_D_TELEVISION__H
 
 #include <deque>
 #include <mutex>
-#include <vector>
-#include <SDL2/SDL.h>
-#include "roboflex_core/core.h"
-#include "roboflex_core/core_nodes/frequency_generator.h"
+#include "implot_node.h"
 
 namespace roboflex {
 namespace imgui {
 
-using std::string, std::vector, std::pair, std::deque;
-
-class IMPLOTNode: public core::RunnableNode {
-public:
-    IMPLOTNode(
-        const pair<int, int>& initial_size = {640, 220},
-        const pair<int, int>& initial_pos = {-1, -1},
-        const string& name = "IMPLOTNode",
-        const bool debug = false);
-
-protected:
-
-    // child classes should override this
-    virtual void draw() {}
-
-    void child_thread_fn() override;
-
-    pair<int, int> initial_size = {640, 220};
-    pair<int, int> initial_pos = {-1, -1};
-    bool debug = false;
-};
+using std::string, std::pair, std::deque, core::MessagePtr;
 
 class OneDTV: public IMPLOTNode {
 public:
     OneDTV(
+        const string& window_title = "OneDTV",
         const string& data_key = "data",
         const unsigned int sample_size = 4,
         const bool center_zero = true,
@@ -46,7 +24,7 @@ public:
     
     virtual ~OneDTV();
 
-    void receive(MessagePtr m) override;
+    void receive(core::MessagePtr m) override;
 
     string to_string() const override;
 
@@ -66,7 +44,16 @@ protected:
     deque<core::MessagePtr> data_queue;
 };
 
+// class MetricsCentral: public IMPLOTNode {
+// public:
+//     MetricsCentral(
+//         const pair<int, int>& initial_size = {640, 220},
+//         const pair<int, int>& initial_pos = {-1, -1},
+//         const string& name = "MetricsCentral",
+//         const bool debug = false);
+// };
+
 }  // namespace imgui
 }  // namespace roboflex
 
-#endif // ROBOFLEX_IMGUI__H
+#endif // ROBOFLEX_ONE_D_TELEVISION__H

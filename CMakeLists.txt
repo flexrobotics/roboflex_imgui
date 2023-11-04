@@ -89,8 +89,12 @@ target_compile_definitions(implot PRIVATE
 # Define the library
 
 add_library(roboflex_imgui STATIC
-    src/imgui_nodes.cpp
-    include/roboflex_imgui/imgui_nodes.h
+    src/implot_node.cpp
+    src/oned_television.cpp
+    src/metrics_television.cpp
+    include/roboflex_imgui/implot_node.h
+    include/roboflex_imgui/oned_television.h
+    include/roboflex_imgui/metrics_television.h
 )
 
 # Set some properties on our library

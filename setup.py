@@ -50,7 +50,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='roboflex.imgui',
-    version='0.1.9',
+    version='0.1.10',
     description='Roboflex Visualization/GUI Library using IMGUI/IMPLOT',
     author='Colin Prepscius',
     author_email='colinprepscius@gmail.com',
@@ -74,7 +74,7 @@ setup(
     install_requires=['numpy', 'roboflex'],
     ext_modules=[CMakeExtension('roboflex/imgui/roboflex_imgui_ext')],
     cmdclass=dict(build_ext=CMakeBuild),
-    py_modules=['__init__'],
+    py_modules=['__init__', 'metrics_central', 'generate_test_metrics'],
     packages=['roboflex.imgui'],
     package_dir={'roboflex.imgui': 'python'}
 )
