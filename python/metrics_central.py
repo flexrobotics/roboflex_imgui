@@ -52,7 +52,6 @@ if __name__ == "__main__":
 
     metrics_visualizer = get_metrics_visualizer(args.broker_address, args.broker_port, args.metrics_topic)
     metrics_subscriber > metrics_visualizer
-    metrics_subscriber > rfx.MessagePrinter()
     metrics_subscriber.start()
-    metrics_visualizer.run()
+    metrics_visualizer.run() # will block until the window is closed
     metrics_subscriber.stop()
