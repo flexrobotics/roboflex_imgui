@@ -151,8 +151,8 @@ void OneDTV::draw()
         ImGui::TableSetColumnIndex(0);
         ImGui::Text("samples per second: %d", total_samples);
 
-        int i = 0;
-        for (const auto v: values) {
+        size_t i = 0;
+        for (const auto &v: values) {
 
             // compute graph limits
             const auto [min, max] = std::minmax_element(begin(v), end(v));

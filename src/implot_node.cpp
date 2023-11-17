@@ -82,7 +82,7 @@ void IMPLOTNode::child_thread_fn()
     const char glsl_new_string[] = {(char)glsls[0], (char)glsls[2], (char)glsls[3], 0};
     
     // now we have "#version 410"
-    std:string n = string("#version ") + glsl_new_string;
+    string n = string("#version ") + glsl_new_string;
     const char* glsl_version = n.data();
 
 #else

@@ -25,6 +25,7 @@ message("GLEW_LIBRARIES: ${GLEW_LIBRARIES}")
 FetchContent_Declare(roboflex_core
     GIT_REPOSITORY https://github.com/flexrobotics/roboflex.git
     GIT_TAG        main
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 set(BUILD_ROBOFLEX_PYTHON_EXT OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(roboflex_core)
@@ -42,6 +43,7 @@ FetchContent_MakeAvailable(roboflex_core)
 FetchContent_Declare(
   imgui
   URL https://github.com/ocornut/imgui/archive/refs/tags/v1.89.5.tar.gz
+  DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(imgui)
 set(IMGUI_SRC_DIR "${imgui_SOURCE_DIR}")
@@ -65,6 +67,7 @@ target_include_directories(imgui PUBLIC
 FetchContent_Declare(
   implot
   URL https://github.com/epezent/implot/archive/refs/tags/v0.14.tar.gz
+  DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(implot)
 set(IMPLOT_SRC_DIR "${implot_SOURCE_DIR}")
