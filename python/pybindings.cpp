@@ -20,7 +20,7 @@ PYBIND11_MODULE(roboflex_imgui_ext, m) {
     ;
 
     py::enum_<OneDTV::PlotStyle>(m, "PlotStyle")
-        .value("Line",OneDTV::PlotStyle::Line)
+        .value("Line", OneDTV::PlotStyle::Line)
         .value("Scatter", OneDTV::PlotStyle::Scatter)
     ;
 
@@ -31,7 +31,7 @@ PYBIND11_MODULE(roboflex_imgui_ext, m) {
             py::arg("data_key") = "data",
             py::arg("sample_size") = 4,
             py::arg("plot_style") = OneDTV::PlotStyle::Line,
-            py::arg("marker_width") = 0.1f,
+            py::arg("marker_size") = 0.1f,
             py::arg("center_zero") = true,
             py::arg("initial_size") = pair<int, int>{640, 220},
             py::arg("initial_pos") = pair<int, int>{-1, -1},
