@@ -53,6 +53,8 @@ OneDTV::OneDTV(
     const string& window_title,
     const string& data_key,
     const unsigned int sample_size,
+    const OneDTV::PlotStyle plot_style,
+    const float marker_size,
     const bool center_zero,
     const pair<int, int>& initial_size,
     const pair<int, int>& initial_pos,
@@ -61,6 +63,8 @@ OneDTV::OneDTV(
         IMPLOTNode(window_title, initial_size, initial_pos, name, debug),
         data_key(data_key),
         sample_size(sample_size),
+        plot_style(plot_style),
+        marker_size(marker_size),
         center_zero(center_zero)
 {
 
@@ -172,10 +176,19 @@ void OneDTV::draw()
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             ImPlot::SetNextAxesLimits(0, v.size(), miny, maxy, ImPlotCond_Always);
-            if (ImPlot::BeginPlot("", ImVec2(-1,100), flags)) {
+            //if (ImPlot::BeginPlot("", ImVec2(-1,100), flags)) {
+            if (ImPlot::BeginPlot("", ImVec2(-1,-1), flags)) {
                 ImPlot::SetupAxis(ImAxis_X1, NULL, x_flags);
                 ImPlot::SetupAxis(ImAxis_Y1, NULL, y_flags);
-                ImPlot::PlotLine("##noid", v.data(), v.size());
+                if (plot_style == OneDTV::PlotStyle::Scatter) {
+                    ImPlot::PushStyleVar(ImPlotStyleVar_MarkerSize, marker_size);
+                    ImPlot::PlotScatter("##noid", v.data(), v.size());
+                }
+                else if (plot_style == OneDTV::PlotStyle::Line) {
+                    ImPlot::PlotLine("##noid", v.data(), v.size());
+                }
+                //ImPlot::PlotScatter("##noid", v.data(), v.size());
+                //ImPlot::PlotLine("##noid", v.data(), v.size());
                 ImPlot::EndPlot();
             }
 

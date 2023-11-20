@@ -32,7 +32,7 @@ FetchContent_MakeAvailable(roboflex_core)
 
 # ONLY IF YOU ARE COMPILING THE EXAMPLE
 # TODO: move into examples/CMakeLists.txt
-# # download and build roboflex_transport_zmq
+# download and build roboflex_transport_zmq
 # FetchContent_Declare(roboflex_transport_zmq
 #     GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_zmq.git
 #     GIT_TAG        main
@@ -148,11 +148,6 @@ endif()
 #     roboflex_core 
 #     roboflex_imgui
 #     roboflex_transport_zmq
-#     imgui
-#     implot
-#     GLEW
-#     GL
-#     SDL2
 # )
 
 # show_blank_cpp example

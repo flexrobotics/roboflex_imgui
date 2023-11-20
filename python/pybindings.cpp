@@ -19,12 +19,19 @@ PYBIND11_MODULE(roboflex_imgui_ext, m) {
             py::arg("debug") = false)
     ;
 
+    py::enum_<OneDTV::PlotStyle>(m, "PlotStyle")
+        .value("Line",OneDTV::PlotStyle::Line)
+        .value("Scatter", OneDTV::PlotStyle::Scatter)
+    ;
+
     py::class_<OneDTV, IMPLOTNode, std::shared_ptr<OneDTV>>(m, "OneDTV")
-        .def(py::init<const std::string&, const std::string&, const unsigned int, const bool, const pair<int, int>&, const pair<int, int>&, const std::string&, const bool>(),
+        .def(py::init<const std::string&, const std::string&, const unsigned int, const OneDTV::PlotStyle, const float, const bool, const pair<int, int>&, const pair<int, int>&, const std::string&, const bool>(),
             "Create a OneDTV node.",
             py::arg("window_title") = "OneDTV",
             py::arg("data_key") = "data",
             py::arg("sample_size") = 4,
+            py::arg("plot_style") = OneDTV::PlotStyle::Line,
+            py::arg("marker_width") = 0.1f,
             py::arg("center_zero") = true,
             py::arg("initial_size") = pair<int, int>{640, 220},
             py::arg("initial_pos") = pair<int, int>{-1, -1},
