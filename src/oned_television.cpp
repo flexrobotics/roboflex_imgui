@@ -171,12 +171,15 @@ void OneDTV::draw()
             double miny = center_zero ? (-1.0 * std::max(fabs(graph_limits[i].first), fabs(graph_limits[i].first))) : graph_limits[i].first;
             double maxy = center_zero ? ( 1.0 * std::max(fabs(graph_limits[i].second), fabs(graph_limits[i].second))) : graph_limits[i].second;
 
+            maxy = std::max(-miny, maxy);
+            miny = -maxy;
+
             auto flags = ImPlotFlags_NoLegend | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoMouseText | ImPlotAxisFlags_NoHighlight | ImPlotFlags_NoChild;
 
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             ImPlot::SetNextAxesLimits(0, v.size(), miny, maxy, ImPlotCond_Always);
-            //if (ImPlot::BeginPlot("", ImVec2(-1,100), flags)) {
+            
             if (ImPlot::BeginPlot("", ImVec2(-1,-1), flags)) {
                 ImPlot::SetupAxis(ImAxis_X1, NULL, x_flags);
                 ImPlot::SetupAxis(ImAxis_Y1, NULL, y_flags);
@@ -187,8 +190,17 @@ void OneDTV::draw()
                 else if (plot_style == OneDTV::PlotStyle::Line) {
                     ImPlot::PlotLine("##noid", v.data(), v.size());
                 }
-                //ImPlot::PlotScatter("##noid", v.data(), v.size());
-                //ImPlot::PlotLine("##noid", v.data(), v.size());
+
+                if (center_zero) {
+                    // draw the center line
+                    auto center_line_color = ImVec4(1, 1, 1, 0.2);
+                    ImPlot::PushStyleColor(ImPlotCol_Line, center_line_color);
+                    float x_data[2] = {0, float(v.size()-1)};
+                    float y_data[2] = {0, 0};
+                    ImPlot::PlotLine("centerline", x_data, y_data, 2);
+                    ImPlot::PopStyleColor();
+                }
+
                 ImPlot::EndPlot();
             }
 

@@ -33,11 +33,11 @@ FetchContent_MakeAvailable(roboflex_core)
 # ONLY IF YOU ARE COMPILING THE EXAMPLE
 # TODO: move into examples/CMakeLists.txt
 # download and build roboflex_transport_zmq
-# FetchContent_Declare(roboflex_transport_zmq
-#     GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_zmq.git
-#     GIT_TAG        main
-# )
-# FetchContent_MakeAvailable(roboflex_transport_zmq)
+FetchContent_Declare(roboflex_transport_zmq
+    GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_zmq.git
+    GIT_TAG        main
+)
+FetchContent_MakeAvailable(roboflex_transport_zmq)
 
 # Fetch and make imgui available, and build static library ourselves
 FetchContent_Declare(
@@ -143,12 +143,12 @@ endif()
 # Examples
 
 # display_oneD_data_cpp example
-# add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
-# target_link_libraries(display_oneD_data_cpp PUBLIC 
-#     roboflex_core 
-#     roboflex_imgui
-#     roboflex_transport_zmq
-# )
+add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
+target_link_libraries(display_oneD_data_cpp PUBLIC 
+    roboflex_core 
+    roboflex_imgui
+    roboflex_transport_zmq
+)
 
 # show_blank_cpp example
 add_executable(show_blank_cpp examples/show_blank_cpp.cpp)
