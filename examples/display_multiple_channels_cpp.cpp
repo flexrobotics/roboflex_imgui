@@ -22,11 +22,7 @@ int main() {
                 v[2].AsDouble(),
                 v[3].AsDouble() 
             };
-            // xt::xarray<double> d { 
-            //     v[0].AsDouble()
-            // };
             auto data = xt::expand_dims(d, 1);
-            //std::cout << "Signalling data:" << xt::adapt(data.shape()) << "  " << data << std::endl;
             return roboflex::core::TensorMessage<double, 2>::Ptr(data, "TensorMessage", "data");
         },
         "data_transformer"
@@ -47,8 +43,6 @@ int main() {
         false                   // debug
     );
 
-    //auto printer = roboflex::nodes::MessagePrinter();
-    //mqtt_sub > data_transformer > printer > onedtv;
     mqtt_sub > data_transformer > onedtv;
 
     mqtt_sub.start();
