@@ -12,6 +12,8 @@ int main() {
         true,                   // center on zero
         {640, 220},             // initial size
         {100, -1},              // initial position
+        -1,                     // plot height
+        false,                  // annotate lead
         "Audio Television",     // node name
         false                   // debug
     );

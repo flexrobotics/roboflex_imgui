@@ -58,6 +58,8 @@ OneDTV::OneDTV(
     const bool center_zero,
     const pair<int, int>& initial_size,
     const pair<int, int>& initial_pos,
+    const int plot_height,
+    const bool annotate_lead,
     const string& name,
     const bool debug):
         IMPLOTNode(window_title, initial_size, initial_pos, name, debug),
@@ -65,7 +67,9 @@ OneDTV::OneDTV(
         sample_size(sample_size),
         plot_style(plot_style),
         marker_size(marker_size),
-        center_zero(center_zero)
+        center_zero(center_zero),
+        plot_height(plot_height),
+        annotate_lead(annotate_lead)
 {
 
 }
@@ -149,8 +153,11 @@ void OneDTV::draw()
     auto x_flags = ImPlotAxisFlags_NoGridLines;
     auto y_flags = ImPlotAxisFlags_NoGridLines;
 
+    //   ImGui::Text("samples per second: %d", total_samples);
+
     if (ImGui::BeginTable("table", 1, 0, ImVec2(-1,0))) {
 
+        // first row is the samples per second printout
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         ImGui::Text("samples per second: %d", total_samples);
@@ -164,25 +171,52 @@ void OneDTV::draw()
                 graph_limits.push_back({*min, *max});
             } else {
                 graph_limits[i] = {
-                    *min * 0.005 + graph_limits[i].first * 0.995, 
-                    *max * 0.005 + graph_limits[i].second * 0.995
+                    *min * 0.01 + graph_limits[i].first * 0.99, 
+                    *max * 0.01 + graph_limits[i].second * 0.99
                 };
             }
-            double miny = center_zero ? (-1.0 * std::max(fabs(graph_limits[i].first), fabs(graph_limits[i].first))) : graph_limits[i].first;
-            double maxy = center_zero ? ( 1.0 * std::max(fabs(graph_limits[i].second), fabs(graph_limits[i].second))) : graph_limits[i].second;
+            double miny = graph_limits[i].first;
+            double maxy = graph_limits[i].second;
 
-            maxy = std::max(-miny, maxy);
-            miny = -maxy;
+            // do we want to force graph to be entirely visible? It looks weird...
+            // if (miny > *min) {
+            //     miny = *min;
+            // }
+            // if (maxy < *max) {
+            //     maxy = *max;
+            // }
 
-            auto flags = ImPlotFlags_NoLegend | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoMouseText | ImPlotAxisFlags_NoHighlight | ImPlotFlags_NoChild;
+            // add a little padding
+            double padding = (fabs(maxy) + fabs(miny))* 0.01;
+            miny -= padding;
+            maxy += padding;
+            if (center_zero) {
+                maxy = std::max(-miny, maxy);
+                miny = -maxy;
+            } 
 
+            // Advance to the next row
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
+
+            // Set up axes limits
             ImPlot::SetNextAxesLimits(0, v.size(), miny, maxy, ImPlotCond_Always);
             
-            if (ImPlot::BeginPlot("", ImVec2(-1,-1), flags)) {
+            // Draw the plot
+            auto flags = ImPlotFlags_NoLegend | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoMouseText | ImPlotAxisFlags_NoHighlight | ImPlotFlags_NoChild;
+            if (ImPlot::BeginPlot("", ImVec2(-1, this->plot_height), flags)) {
+
+                // display the lead value in an annotation
+                if (annotate_lead) {
+                    ImVec4 annotation_color = ImVec4(0,1,0,0.5);
+                    ImPlot::Annotation(v.size()-1,v.back(),annotation_color, ImVec2(-5,10), true, "%.3f", v.back());
+                }
+
+                // Set up axes
                 ImPlot::SetupAxis(ImAxis_X1, NULL, x_flags);
                 ImPlot::SetupAxis(ImAxis_Y1, NULL, y_flags);
+
+                // Draw the data
                 if (plot_style == OneDTV::PlotStyle::Scatter) {
                     ImPlot::PushStyleVar(ImPlotStyleVar_MarkerSize, marker_size);
                     ImPlot::PlotScatter("##noid", v.data(), v.size());
@@ -191,8 +225,8 @@ void OneDTV::draw()
                     ImPlot::PlotLine("##noid", v.data(), v.size());
                 }
 
+                // draw the center line
                 if (center_zero) {
-                    // draw the center line
                     auto center_line_color = ImVec4(1, 1, 1, 0.2);
                     ImPlot::PushStyleColor(ImPlotCol_Line, center_line_color);
                     float x_data[2] = {0, float(v.size()-1)};

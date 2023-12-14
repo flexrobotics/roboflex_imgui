@@ -27,6 +27,8 @@ public:
         const bool center_zero = true,
         const pair<int, int>& initial_size = {640, 220},
         const pair<int, int>& initial_pos = {-1, -1},
+        const int plot_height = -1,
+        const bool annotate_lead = false,
         const string& name = "OneDTV",
         const bool debug = false);
     
@@ -46,6 +48,8 @@ protected:
     PlotStyle plot_style = PlotStyle::Line;
     float marker_size = 0.1f;
     bool center_zero = true;
+    int plot_height = -1;
+    bool annotate_lead = false;
 
     vector<pair<double, double>> graph_limits;
     deque<pair<double, uint32_t>> timestamped_counts;

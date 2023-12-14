@@ -38,22 +38,27 @@ FetchContent_Declare(roboflex_transport_zmq
     GIT_TAG        main
 )
 FetchContent_MakeAvailable(roboflex_transport_zmq)
+# download and build roboflex_transport_mqtt
+FetchContent_Declare(roboflex_transport_mqtt
+    GIT_REPOSITORY https://github.com/flexrobotics/roboflex_transport_mqtt.git
+    GIT_TAG        main
+)
+FetchContent_MakeAvailable(roboflex_transport_mqtt)
 
 # Fetch and make imgui available, and build static library ourselves
-FetchContent_Declare(
-  imgui
-  URL https://github.com/ocornut/imgui/archive/refs/tags/v1.89.5.tar.gz
-  DOWNLOAD_EXTRACT_TIMESTAMP 1
+FetchContent_Declare(imgui
+    URL https://github.com/ocornut/imgui/archive/refs/tags/v1.89.5.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(imgui)
 set(IMGUI_SRC_DIR "${imgui_SOURCE_DIR}")
 add_library(imgui STATIC
-  ${IMGUI_SRC_DIR}/imgui.cpp
-  ${IMGUI_SRC_DIR}/imgui_draw.cpp
-  ${IMGUI_SRC_DIR}/imgui_tables.cpp
-  ${IMGUI_SRC_DIR}/imgui_widgets.cpp
-  ${IMGUI_SRC_DIR}/backends/imgui_impl_sdl2.cpp
-  ${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.cpp
+    ${IMGUI_SRC_DIR}/imgui.cpp
+    ${IMGUI_SRC_DIR}/imgui_draw.cpp
+    ${IMGUI_SRC_DIR}/imgui_tables.cpp
+    ${IMGUI_SRC_DIR}/imgui_widgets.cpp
+    ${IMGUI_SRC_DIR}/backends/imgui_impl_sdl2.cpp
+    ${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.cpp
 )
 set_property(TARGET imgui PROPERTY 
     POSITION_INDEPENDENT_CODE ON
@@ -133,6 +138,13 @@ endif()
 # -------------------- 
 # Examples
 
+# show_blank_cpp example
+add_executable(show_blank_cpp examples/show_blank_cpp.cpp)
+target_link_libraries(show_blank_cpp PUBLIC 
+    roboflex_core 
+    roboflex_imgui
+)
+
 # display_oneD_data_cpp example
 add_executable(display_oneD_data_cpp examples/display_oneD_data_cpp.cpp)
 target_link_libraries(display_oneD_data_cpp PUBLIC 
@@ -141,11 +153,12 @@ target_link_libraries(display_oneD_data_cpp PUBLIC
     roboflex_transport_zmq
 )
 
-# show_blank_cpp example
-add_executable(show_blank_cpp examples/show_blank_cpp.cpp)
-target_link_libraries(show_blank_cpp PUBLIC 
+# display_multiple_channels_cpp example
+add_executable(display_multiple_channels_cpp examples/display_multiple_channels_cpp.cpp)
+target_link_libraries(display_multiple_channels_cpp PUBLIC 
     roboflex_core 
     roboflex_imgui
+    roboflex_transport_mqtt
 )
 
 

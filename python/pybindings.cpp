@@ -25,7 +25,7 @@ PYBIND11_MODULE(roboflex_imgui_ext, m) {
     ;
 
     py::class_<OneDTV, IMPLOTNode, std::shared_ptr<OneDTV>>(m, "OneDTV")
-        .def(py::init<const std::string&, const std::string&, const unsigned int, const OneDTV::PlotStyle, const float, const bool, const pair<int, int>&, const pair<int, int>&, const std::string&, const bool>(),
+        .def(py::init<const std::string&, const std::string&, const unsigned int, const OneDTV::PlotStyle, const float, const bool, const pair<int, int>&, const pair<int, int>&, const int, const bool, const std::string&, const bool>(),
             "Create a OneDTV node.",
             py::arg("window_title") = "OneDTV",
             py::arg("data_key") = "data",
@@ -35,6 +35,8 @@ PYBIND11_MODULE(roboflex_imgui_ext, m) {
             py::arg("center_zero") = true,
             py::arg("initial_size") = pair<int, int>{640, 220},
             py::arg("initial_pos") = pair<int, int>{-1, -1},
+            py::arg("plot_height") = -1,
+            py::arg("annotate_lead") = false,
             py::arg("name") = "OneDTV",
             py::arg("debug") = false)
     ;
