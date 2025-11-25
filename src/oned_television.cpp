@@ -108,6 +108,8 @@ void OneDTV::receive(MessagePtr m)
     if (data_queue.size() > sample_size) {
         data_queue.pop_front();
     }
+
+    signal(m);
 }
 
 void OneDTV::populate_values(vector<vector<double>>& values) const

@@ -159,6 +159,7 @@ target_link_libraries(display_multiple_channels_cpp PUBLIC
     roboflex_core 
     roboflex_imgui
     roboflex_transport_mqtt
+    roboflex_transport_zmq
 )
 
 
@@ -181,4 +182,6 @@ install(DIRECTORY include/roboflex_imgui
 # --------------------
 # build python bindings
 
-add_subdirectory(python)
+if(BUILD_ROBOFLEX_PYTHON_EXT)
+    add_subdirectory(python)
+endif()

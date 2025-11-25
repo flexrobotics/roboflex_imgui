@@ -21,7 +21,7 @@ int main() {
     auto zmq_context = roboflex::transportzmq::MakeZMQContext();
     auto zmq_sub = roboflex::transportzmq::ZMQSubscriber(
         zmq_context,
-        "tcp://localhost:5553", // bind address
+        "tcp://localhost:5555", // bind address
         "ZMQSubscriber",        // node name
         8                       // queue size
     );
