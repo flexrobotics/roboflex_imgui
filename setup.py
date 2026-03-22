@@ -50,7 +50,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='roboflex.imgui',
-    version='0.1.17',
+    version='0.1.18',
     description='Roboflex Visualization/GUI Library using IMGUI/IMPLOT',
     author='Colin Prepscius',
     author_email='colinprepscius@gmail.com',
