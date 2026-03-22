@@ -182,6 +182,7 @@ install(DIRECTORY include/roboflex_imgui
 # --------------------
 # build python bindings
 
-if(BUILD_ROBOFLEX_PYTHON_EXT)
+option(BUILD_IMGUI_PYTHON_EXT "Build the imgui Python extension" ON)
+if(BUILD_IMGUI_PYTHON_EXT)
     add_subdirectory(python)
 endif()
